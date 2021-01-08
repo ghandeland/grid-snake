@@ -72,16 +72,13 @@ function draw() {
   previousX = currentPos.x;
   previousY = currentPos.y;
 
-  // Dir 1
-  currentPos.x += 12;
-  currentPos.y += 0;
-
-  line(previousX, previousY, currentPos.x, currentPos.y);
-
-  // Move to 1
+  let num = "4343434343434343";
+  let charArray = num.split('');
+  for(let i = 0; i < charArray.length; i++) {
+    if(charArray[i] === '9' || charArray[i] === '0') break; 
+    newLine(parseInt(charArray[i]));
+  }
   
-  newLine(3);
-
   // End circle
   noStroke();
   fill("red");
@@ -94,17 +91,12 @@ function newLine(number) {
   previousX = currentPos.x;
   previousY = currentPos.y;
 
-  const coordinates = getNextCoordinates(3);
+  const coordinates = dir[dirLookups[currentDirection] + (number - 1)];
   
-  coordinates.x += 12;
-  coordinates.y += 12;
+  currentPos.x += coordinates.x;
+  currentPos.y += coordinates.y;
 
   line(previousX, previousY, currentPos.x, currentPos.y);
   currentDirection = coordinates.n;
   
 }
-
-function getNextCoordinates(number) {
-  return dir[dirLookups[currentDirection] + (number - 1)];
-}
-
