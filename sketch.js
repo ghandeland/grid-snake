@@ -1,12 +1,13 @@
 
+const lu = 12;
 // Equivalent: 4, 5, 6, 7, 8, 1, 2, 3
-
 // Directions: E, SE, S, SW, W, NW, N, NE
 let currentDirection = 'E';
 let currentPos = {
-  x: 300,
-  y: 300,
+  x: 0,
+  y: 0
 };
+
 const dirLookups = {
   "E": 0,
   "SE": 8,
@@ -20,47 +21,98 @@ const dirLookups = {
 
 let dir = [
   // E
-  {x: -12, y: -12, n: 'NW'}, {x: 0, y: -12, n: 'N'}, {x: 12, y: -12, n: 'NE'}, {x: 12, y: 0, n: 'E'},
-  {x: 12, y: 12, n: 'SE'}, {x: 0, y: 12, n: 'S'}, {x: -12, y: -12, n: 'SW'}, {x: -12, y: 0, n: 'W'},
+  { x: -lu, y: -lu, n: "NW" },
+  { x: 0, y: -lu, n: "N" },
+  { x: lu, y: -lu, n: "NE" },
+  { x: lu, y: 0, n: "E" },
+  { x: lu, y: lu, n: "SE" },
+  { x: 0, y: lu, n: "S" },
+  { x: -lu, y: -lu, n: "SW" },
+  { x: -lu, y: 0, n: "W" },
   // SE
-  {x: 0, y: -12, n: 'N'}, {x: 12, y: -12, n: 'NE'}, {x: 12, y: 0, n: 'E'}, {x: 12, y: 12, n: 'SE'},
-  {x: 0, y: 12, n: 'S'}, {x: -12, y: 12, n: 'SW'}, {x: -12, y: 0, n: 'W'}, {x: -12, y: -12, n: 'NW'},
+  { x: 0, y: -lu, n: "N" },
+  { x: lu, y: -lu, n: "NE" },
+  { x: lu, y: 0, n: "E" },
+  { x: lu, y: lu, n: "SE" },
+  { x: 0, y: lu, n: "S" },
+  { x: -lu, y: lu, n: "SW" },
+  { x: -lu, y: 0, n: "W" },
+  { x: -lu, y: -lu, n: "NW" },
   // S
-  {x: 12, y: -12, n: 'NE'}, {x: 12, y: 0, n: 'E'}, {x: 12, y: 12, n: 'SE'}, {x: 0, y: 12, n: 'S'}, 
-  {x: -12, y: 12, n: 'SW'}, {x: -12, y: 0, n: 'W'}, {x: -12, y: -12, n: 'NW'}, {x: 0, y: -12, n: 'N'},
+  { x: lu, y: -lu, n: "NE" },
+  { x: lu, y: 0, n: "E" },
+  { x: lu, y: lu, n: "SE" },
+  { x: 0, y: lu, n: "S" },
+  { x: -lu, y: lu, n: "SW" },
+  { x: -lu, y: 0, n: "W" },
+  { x: -lu, y: -lu, n: "NW" },
+  { x: 0, y: -lu, n: "N" },
   // SW
-  {x: 12, y: 0, n: 'E'}, {x: 12, y: 12, n: 'SE'}, {x: 0, y: 12, n: 'S'}, {x: -12, y: 12, n: 'SW'}, 
-  {x: -12, y: 0, n: 'W'}, {x: -12, y: -12, n: 'NW'}, {x: 0, y: -12, n: 'N'}, {x: 12, y: -12, n: 'NE'},
+  { x: lu, y: 0, n: "E" },
+  { x: lu, y: lu, n: "SE" },
+  { x: 0, y: lu, n: "S" },
+  { x: -lu, y: lu, n: "SW" },
+  { x: -lu, y: 0, n: "W" },
+  { x: -lu, y: -lu, n: "NW" },
+  { x: 0, y: -lu, n: "N" },
+  { x: lu, y: -lu, n: "NE" },
   // W
-  {x: 12, y: 12, n: 'SE'}, {x: 0, y: 12, n: 'S'}, {x: -12, y: 12, n: 'SW'}, {x: -12, y: 0, n: 'W'}, 
-  {x: -12, y: -12, n: 'NW'}, {x: 0, y: -12, n: 'N'}, {x: 12, y: -12, n: 'NE'}, {x: 12, y: 0, n: 'E'},
+  { x: lu, y: lu, n: "SE" },
+  { x: 0, y: lu, n: "S" },
+  { x: -lu, y: lu, n: "SW" },
+  { x: -lu, y: 0, n: "W" },
+  { x: -lu, y: -lu, n: "NW" },
+  { x: 0, y: -lu, n: "N" },
+  { x: lu, y: -lu, n: "NE" },
+  { x: lu, y: 0, n: "E" },
   // NW
-  {x: 0, y: 12, n: 'S'}, {x: -12, y: 12, n: 'SW'}, {x: -12, y: 0, n: 'W'}, {x: -12, y: -12, n: 'NW'}, 
-  {x: 0, y: -12, n: 'N'}, {x: 12, y: -12, n: 'NE'}, {x: 12, y: 0, n: 'E'}, {x: 12, y: 12, n: 'SE'},
+  { x: 0, y: lu, n: "S" },
+  { x: -lu, y: lu, n: "SW" },
+  { x: -lu, y: 0, n: "W" },
+  { x: -lu, y: -lu, n: "NW" },
+  { x: 0, y: -lu, n: "N" },
+  { x: lu, y: -lu, n: "NE" },
+  { x: lu, y: 0, n: "E" },
+  { x: lu, y: lu, n: "SE" },
   // N
-  {x: -12, y: 12, n: 'SW'}, {x: -12, y: 0, n: 'W'}, {x: -12, y: -12, n: 'NW'}, {x: 0, y: -12, n: 'N'}, 
-  {x: 12, y: -12, n: 'NE'}, {x: 12, y: 0, n: 'E'}, {x: 12, y: 12, n: 'SE'}, {x: 0, y: 12, n: 'S'},
+  { x: -lu, y: lu, n: "SW" },
+  { x: -lu, y: 0, n: "W" },
+  { x: -lu, y: -lu, n: "NW" },
+  { x: 0, y: -lu, n: "N" },
+  { x: lu, y: -lu, n: "NE" },
+  { x: lu, y: 0, n: "E" },
+  { x: lu, y: lu, n: "SE" },
+  { x: 0, y: lu, n: "S" },
   // NE
-  {x: -12, y: 0, n: 'W'}, {x: -12, y: -12, n: 'NW'}, {x: 0, y: -12, n: 'N'}, {x: 12, y: -12, n: 'NE'}, 
-  {x: 12, y: 0, n: 'E'}, {x: 12, y: 12, n: 'E'}, {x: 0, y: 12, n: 'SE'}, {x: -12, y: 12, n: 'SW'}
+  { x: -lu, y: 0, n: "W" },
+  { x: -lu, y: -lu, n: "NW" },
+  { x: 0, y: -lu, n: "N" },
+  { x: lu, y: -lu, n: "NE" },
+  { x: lu, y: 0, n: "E" },
+  { x: lu, y: lu, n: "E" },
+  { x: 0, y: lu, n: "SE" },
+  { x: -lu, y: lu, n: "SW" },
 ];
 
 
 function setup() {
-  createCanvas(600, 600);
-}
-
-function draw() {
+  createCanvas(50 * lu, 50 * lu);
+  currentPos.x = 25 * lu;
+  currentPos.y = 25 * lu;
+  
   background(220);
 
   // Draw grid
   stroke(51);
   strokeWeight(0.2);
-  for (let i = 0; i < width; i += 12) {
+  for (let i = 0; i < width; i += lu) {
     line(width, i, 0, i);
     line(i, 0, i, height);
   }
+}
 
+function draw() {
+  
   // Start circle
   noStroke();
   fill("green");
@@ -72,7 +124,7 @@ function draw() {
   previousX = currentPos.x;
   previousY = currentPos.y;
 
-  let num = "4343434343434343";
+  let num = "434343434343434";
   let charArray = num.split('');
   for(let i = 0; i < charArray.length; i++) {
     if(charArray[i] === '9' || charArray[i] === '0') break; 
