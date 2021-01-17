@@ -19,13 +19,19 @@ function Snake(x, y) {
   this.coords = [
     {
       x: 240,
-      y: 240,
+      y: 228
     },
     {
       x: 240,
-      y: 228,
+      y: 240
     }
   ];
+  
+  this.render = function() {
+    for(let i = 0; i < this.coords.length; i++) {
+      console.log(this.coords[i].x);
+    }
+  }
   
 }
 
@@ -36,7 +42,7 @@ function setup() {
   
   background(220);
   frameRate(3);
-  //noLoop();
+  noLoop();
   
   // Draw grid
   stroke(51);
@@ -49,27 +55,8 @@ function setup() {
 }
 
 function draw() {
-  
-  // Start circle
-  noStroke();
-  fill("green");
-  ellipse(currentPos.x, currentPos.y, 5, 5);
+  snake.render();
 
-  let num = "4343434343453434";
-
-  
-  let charArray = num.split('');
-  for(let i = 0; i < charArray.length; i++) {
-    if(charArray[i] === '9' || charArray[i] === '0') break;
-    newLine(parseInt(charArray[i]));
-  }
-  
-  // End circle
-  noStroke();
-  fill("red");
-  ellipse(currentPos.x, currentPos.y, 5, 5);
-
-  console.log("hello");
 }
 
 function newLine(number) {
