@@ -28,8 +28,14 @@ function Snake(x, y) {
   ];
   
   this.render = function() {
-    for(let i = 0; i < this.coords.length; i++) {
-      console.log(this.coords[i].x);
+    let pX = this.coords[0].x;
+    let pY = this.coords[0].y;
+    for(let i = 1; i < this.coords.length; i++) {
+      
+      
+      pX = this.coords[i].x;
+      pY = this.coords[i].y;
+      
     }
   }
   
