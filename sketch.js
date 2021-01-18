@@ -14,7 +14,7 @@ let snake = new Snake(240, 240);
 function Snake(x, y) {
   this.x = x;
   this.y = y;
-  this.dir = 'E';
+  this.cdir = 'E';
   
   this.coords = [
     {
@@ -50,12 +50,18 @@ function Snake(x, y) {
       line(pX, pY, nX, nY);
       
     }
-    
-    this.move = function() {
-      
-    }
-    
   }
+  
+  this.update = function () {
+    this.coords.shift();
+    let oldCoords = this.coords[this.coords.length - 1];
+    let coordDif = dir[dirLookups[this.cdir] + 4];
+    let newCoords = {
+      x: oldCoords.x + coordDif.x,
+      y: oldCoords.y + coordDif.y,
+    };
+    this.coords.push(newCoords);
+  };
   
 }
 
@@ -66,7 +72,7 @@ function setup() {
   
   background(220);
   frameRate(3);
-  noLoop();
+  //noLoop();
   
   // Draw grid
   stroke(51);
@@ -79,8 +85,9 @@ function setup() {
 }
 
 function draw() {
+  snake.update();
   snake.render();
-
+  
 }
 
 function newLine(number) {
@@ -90,7 +97,7 @@ function newLine(number) {
   previousX = currentPos.x;
   previousY = currentPos.y;
 
-  const coordinates = dir[dirLookups[currentDirection] + (number - 1)];
+   
   
   currentPos.x += coordinates.x;
   currentPos.y += coordinates.y;
