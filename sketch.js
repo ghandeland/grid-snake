@@ -1,13 +1,9 @@
+// Directions: E, SE, S, SW, W, NW, N, NE
+// Equivalent: 4, 5, 6, 7, 8, 1, 2, 3
 // Length unit
 const lu = 12;
 
-// Equivalent: 4, 5, 6, 7, 8, 1, 2, 3
-// Directions: E, SE, S, SW, W, NW, N, NE
-let currentDirection = 'E';
-let currentPos = {
-  x: 0,
-  y: 0
-};
+
 
 let snake = new Snake(240, 240);
 
@@ -15,6 +11,7 @@ function Snake(x, y) {
   this.x = x;
   this.y = y;
   this.cdir = 'E';
+  this.ndir = 4;
   
   this.coords = [
     {
@@ -53,23 +50,44 @@ function Snake(x, y) {
   }
   
   this.update = function () {
-    this.coords.shift();
+    
     let oldCoords = this.coords[this.coords.length - 1];
-    let coordDif = dir[dirLookups[this.cdir] + 4];
+    let coordDif = dir[dirLookups[this.cdir] + this.ndir - 1];
     let newCoords = {
       x: oldCoords.x + coordDif.x,
       y: oldCoords.y + coordDif.y,
     };
+    
+    this.coords.shift();
     this.coords.push(newCoords);
+    this.cdir = coordDif.n;
+    this.ndir = 4;
   };
   
 }
 
+function keyTyped() {
+  if (
+    key === "1" ||
+    key === "2" ||
+    key === "3" ||
+    key === "4" ||
+    key === "5" ||
+    key === "6" ||
+    key === "7"
+  ) {
+    snake.ndir = parseInt(key);
+  } 
+  
+}
+
+
 function setup() {
   createCanvas(50 * lu, 50 * lu);
-  currentPos.x = 25 * lu;
-  currentPos.y = 25 * lu;
   
+}
+
+function newFrame() {
   background(220);
   frameRate(3);
   //noLoop();
@@ -81,31 +99,15 @@ function setup() {
     line(width, i, 0, i);
     line(i, 0, i, height);
   }
-  
 }
 
 function draw() {
+  newFrame();
   snake.update();
   snake.render();
   
 }
 
-function newLine(number) {
-  stroke(0);
-  strokeWeight(0.6);
-  
-  previousX = currentPos.x;
-  previousY = currentPos.y;
-
-   
-  
-  currentPos.x += coordinates.x;
-  currentPos.y += coordinates.y;
-
-  line(previousX, previousY, currentPos.x, currentPos.y);
-  currentDirection = coordinates.n;
-  
-}
 
 const dirLookups = {
   E: 0,
