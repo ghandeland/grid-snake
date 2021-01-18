@@ -19,24 +19,42 @@ function Snake(x, y) {
   this.coords = [
     {
       x: 240,
-      y: 228
+      y: 240,
     },
     {
-      x: 240,
-      y: 240
+      x: 252,
+      y: 240,
+    },
+    {
+      x: 264,
+      y: 240,
+    },
+    {
+      x: 276,
+      y: 240,
     }
   ];
   
   this.render = function() {
-    let pX = this.coords[0].x;
-    let pY = this.coords[0].y;
-    for(let i = 1; i < this.coords.length; i++) {
+
+    for(let i = 0; i < this.coords.length - 1; i++) {
+    
+      let pX = this.coords[i].x;
+      let pY = this.coords[i].y;
       
+      let nX = this.coords[i + 1].x;
+      let nY = this.coords[i + 1].y;
       
-      pX = this.coords[i].x;
-      pY = this.coords[i].y;
+      stroke(0);
+      strokeWeight(0.6);
+      line(pX, pY, nX, nY);
       
     }
+    
+    this.move = function() {
+      
+    }
+    
   }
   
 }
