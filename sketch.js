@@ -1,102 +1,163 @@
-
-// Equivalent: 4, 5, 6, 7, 8, 1, 2, 3
-
 // Directions: E, SE, S, SW, W, NW, N, NE
-let currentDirection = 'E';
-let currentPos = {
-  x: 300,
-  y: 300,
-};
+// Equivalent: 4, 5, 6, 7, 8, 1, 2, 3
+// Length unit
+const lu = 12;
+const cSize = lu * 50;
+let snake = new Snake();
+let food = new Food();
+let score = 0;
+const title = document.getElementById("title");
+food.spawn();
+
+
+function setup() {
+  createCanvas(cSize, cSize);
+}
+
+function renderBackground() {
+  background(220);
+  frameRate(8);
+  
+  // Draw grid
+  stroke(51);
+  strokeWeight(0.2);
+  
+  
+  for (let i = 0; i < cSize; i += lu) {
+    line(width, i, 0, i);
+    line(i, 0, i, height);
+  }
+}
+
+function draw() {
+  renderBackground();
+
+  food.render();
+  snake.update();
+  snake.render();
+  checkSnake();
+}
+
+function checkSnake() {
+  
+  // Check if snake is dead
+  if(snake.dead === true) {
+    endGame();
+  }
+  
+  // Check if snake head is at food coordinates
+  if (
+    snake.coords[snake.coords.length - 1].x === food.x &&
+    snake.coords[snake.coords.length - 1].y === food.y
+  ) {
+    food.spawn();
+    snake.eat = true;
+    score++;
+    title.innerHTML = "Score: " + score;
+  }
+}
+
+function endGame() {
+  noLoop();
+  title.innerHTML = "Game over, Score: " + score;
+}
+
+function keyTyped() {
+  if (
+    key === "1" ||
+    key === "2" ||
+    key === "3" ||
+    key === "4" ||
+    key === "5" ||
+    key === "6" ||
+    key === "7"
+  ) {
+    snake.ndir = parseInt(key);
+  } 
+}
+
 const dirLookups = {
-  "E": 0,
-  "SE": 8,
-  "S": 16,
-  "SW": 24,
-  "W": 32,
-  "NW": 40,
-  "N": 48,
-  "NE": 56
+  E: 0,
+  SE: 8,
+  S: 16,
+  SW: 24,
+  W: 32,
+  NW: 40,
+  N: 48,
+  NE: 56,
 };
 
 let dir = [
   // E
-  {x: -12, y: -12, n: 'NW'}, {x: 0, y: -12, n: 'N'}, {x: 12, y: -12, n: 'NE'}, {x: 12, y: 0, n: 'E'},
-  {x: 12, y: 12, n: 'SE'}, {x: 0, y: 12, n: 'S'}, {x: -12, y: -12, n: 'SW'}, {x: -12, y: 0, n: 'W'},
+  { x: -lu, y: -lu, n: "NW" },
+  { x: 0, y: -lu, n: "N" },
+  { x: lu, y: -lu, n: "NE" },
+  { x: lu, y: 0, n: "E" },
+  { x: lu, y: lu, n: "SE" },
+  { x: 0, y: lu, n: "S" },
+  { x: -lu, y: -lu, n: "SW" },
+  { x: -lu, y: 0, n: "W" },
   // SE
-  {x: 0, y: -12, n: 'N'}, {x: 12, y: -12, n: 'NE'}, {x: 12, y: 0, n: 'E'}, {x: 12, y: 12, n: 'SE'},
-  {x: 0, y: 12, n: 'S'}, {x: -12, y: 12, n: 'SW'}, {x: -12, y: 0, n: 'W'}, {x: -12, y: -12, n: 'NW'},
+  { x: 0, y: -lu, n: "N" },
+  { x: lu, y: -lu, n: "NE" },
+  { x: lu, y: 0, n: "E" },
+  { x: lu, y: lu, n: "SE" },
+  { x: 0, y: lu, n: "S" },
+  { x: -lu, y: lu, n: "SW" },
+  { x: -lu, y: 0, n: "W" },
+  { x: -lu, y: -lu, n: "NW" },
   // S
-  {x: 12, y: -12, n: 'NE'}, {x: 12, y: 0, n: 'E'}, {x: 12, y: 12, n: 'SE'}, {x: 0, y: 12, n: 'S'}, 
-  {x: -12, y: 12, n: 'SW'}, {x: -12, y: 0, n: 'W'}, {x: -12, y: -12, n: 'NW'}, {x: 0, y: -12, n: 'N'},
+  { x: lu, y: -lu, n: "NE" },
+  { x: lu, y: 0, n: "E" },
+  { x: lu, y: lu, n: "SE" },
+  { x: 0, y: lu, n: "S" },
+  { x: -lu, y: lu, n: "SW" },
+  { x: -lu, y: 0, n: "W" },
+  { x: -lu, y: -lu, n: "NW" },
+  { x: 0, y: -lu, n: "N" },
   // SW
-  {x: 12, y: 0, n: 'E'}, {x: 12, y: 12, n: 'SE'}, {x: 0, y: 12, n: 'S'}, {x: -12, y: 12, n: 'SW'}, 
-  {x: -12, y: 0, n: 'W'}, {x: -12, y: -12, n: 'NW'}, {x: 0, y: -12, n: 'N'}, {x: 12, y: -12, n: 'NE'},
+  { x: lu, y: 0, n: "E" },
+  { x: lu, y: lu, n: "SE" },
+  { x: 0, y: lu, n: "S" },
+  { x: -lu, y: lu, n: "SW" },
+  { x: -lu, y: 0, n: "W" },
+  { x: -lu, y: -lu, n: "NW" },
+  { x: 0, y: -lu, n: "N" },
+  { x: lu, y: -lu, n: "NE" },
   // W
-  {x: 12, y: 12, n: 'SE'}, {x: 0, y: 12, n: 'S'}, {x: -12, y: 12, n: 'SW'}, {x: -12, y: 0, n: 'W'}, 
-  {x: -12, y: -12, n: 'NW'}, {x: 0, y: -12, n: 'N'}, {x: 12, y: -12, n: 'NE'}, {x: 12, y: 0, n: 'E'},
+  { x: lu, y: lu, n: "SE" },
+  { x: 0, y: lu, n: "S" },
+  { x: -lu, y: lu, n: "SW" },
+  { x: -lu, y: 0, n: "W" },
+  { x: -lu, y: -lu, n: "NW" },
+  { x: 0, y: -lu, n: "N" },
+  { x: lu, y: -lu, n: "NE" },
+  { x: lu, y: 0, n: "E" },
   // NW
-  {x: 0, y: 12, n: 'S'}, {x: -12, y: 12, n: 'SW'}, {x: -12, y: 0, n: 'W'}, {x: -12, y: -12, n: 'NW'}, 
-  {x: 0, y: -12, n: 'N'}, {x: 12, y: -12, n: 'NE'}, {x: 12, y: 0, n: 'E'}, {x: 12, y: 12, n: 'SE'},
+  { x: 0, y: lu, n: "S" },
+  { x: -lu, y: lu, n: "SW" },
+  { x: -lu, y: 0, n: "W" },
+  { x: -lu, y: -lu, n: "NW" },
+  { x: 0, y: -lu, n: "N" },
+  { x: lu, y: -lu, n: "NE" },
+  { x: lu, y: 0, n: "E" },
+  { x: lu, y: lu, n: "SE" },
   // N
-  {x: -12, y: 12, n: 'SW'}, {x: -12, y: 0, n: 'W'}, {x: -12, y: -12, n: 'NW'}, {x: 0, y: -12, n: 'N'}, 
-  {x: 12, y: -12, n: 'NE'}, {x: 12, y: 0, n: 'E'}, {x: 12, y: 12, n: 'SE'}, {x: 0, y: 12, n: 'S'},
+  { x: -lu, y: lu, n: "SW" },
+  { x: -lu, y: 0, n: "W" },
+  { x: -lu, y: -lu, n: "NW" },
+  { x: 0, y: -lu, n: "N" },
+  { x: lu, y: -lu, n: "NE" },
+  { x: lu, y: 0, n: "E" },
+  { x: lu, y: lu, n: "SE" },
+  { x: 0, y: lu, n: "S" },
   // NE
-  {x: -12, y: 0, n: 'W'}, {x: -12, y: -12, n: 'NW'}, {x: 0, y: -12, n: 'N'}, {x: 12, y: -12, n: 'NE'}, 
-  {x: 12, y: 0, n: 'E'}, {x: 12, y: 12, n: 'E'}, {x: 0, y: 12, n: 'SE'}, {x: -12, y: 12, n: 'SW'}
+  { x: -lu, y: 0, n: "W" },
+  { x: -lu, y: -lu, n: "NW" },
+  { x: 0, y: -lu, n: "N" },
+  { x: lu, y: -lu, n: "NE" },
+  { x: lu, y: 0, n: "E" },
+  { x: lu, y: lu, n: "E" },
+  { x: 0, y: lu, n: "SE" },
+  { x: -lu, y: lu, n: "SW" },
 ];
-
-
-function setup() {
-  createCanvas(600, 600);
-}
-
-function draw() {
-  background(220);
-
-  // Draw grid
-  stroke(51);
-  strokeWeight(0.2);
-  for (let i = 0; i < width; i += 12) {
-    line(width, i, 0, i);
-    line(i, 0, i, height);
-  }
-
-  // Start circle
-  noStroke();
-  fill("green");
-  ellipse(currentPos.x, currentPos.y, 5, 5);
-
-  stroke(0);
-  strokeWeight(0.6);
-
-  previousX = currentPos.x;
-  previousY = currentPos.y;
-
-  let num = "4343434343434343";
-  let charArray = num.split('');
-  for(let i = 0; i < charArray.length; i++) {
-    if(charArray[i] === '9' || charArray[i] === '0') break; 
-    newLine(parseInt(charArray[i]));
-  }
-  
-  // End circle
-  noStroke();
-  fill("red");
-  ellipse(currentPos.x, currentPos.y, 5, 5);
-
-  noLoop();
-}
-
-function newLine(number) {
-  previousX = currentPos.x;
-  previousY = currentPos.y;
-
-  const coordinates = dir[dirLookups[currentDirection] + (number - 1)];
-  
-  currentPos.x += coordinates.x;
-  currentPos.y += coordinates.y;
-
-  line(previousX, previousY, currentPos.x, currentPos.y);
-  currentDirection = coordinates.n;
-  
-}
