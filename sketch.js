@@ -157,7 +157,7 @@ let dir = [
   { x: 0, y: -lu, n: "N" },
   { x: lu, y: -lu, n: "NE" },
   { x: lu, y: 0, n: "E" },
-  { x: lu, y: lu, n: "E" },
-  { x: 0, y: lu, n: "SE" },
+  { x: lu, y: lu, n: "SE" },
+  { x: 0, y: lu, n: "S" },
   { x: -lu, y: lu, n: "SW" },
 ];
