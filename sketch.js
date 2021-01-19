@@ -5,7 +5,10 @@ const lu = 12;
 const cSize = lu * 50;
 let snake = new Snake();
 let food = new Food();
+let score = 0;
+const title = document.getElementById("title");
 food.spawn();
+
 
 function setup() {
   createCanvas(cSize, cSize);
@@ -13,7 +16,7 @@ function setup() {
 
 function renderBackground() {
   background(220);
-  frameRate(3);
+  frameRate(8);
   
   // Draw grid
   stroke(51);
@@ -31,17 +34,32 @@ function draw() {
 
   food.render();
   snake.update();
-  checkEat();
   snake.render();
+  checkSnake();
 }
 
-function checkEat() {
-  if(snake.coords[snake.coords.length - 1].x === food.x 
-    && snake.coords[snake.coords.length - 1].y === food.y) {
-      food.spawn();
-      snake.eat = true;
-    } 
+function checkSnake() {
   
+  // Check if snake is dead
+  if(snake.dead === true) {
+    endGame();
+  }
+  
+  // Check if snake head is at food coordinates
+  if (
+    snake.coords[snake.coords.length - 1].x === food.x &&
+    snake.coords[snake.coords.length - 1].y === food.y
+  ) {
+    food.spawn();
+    snake.eat = true;
+    score++;
+    title.innerHTML = "Score: " + score;
+  }
+}
+
+function endGame() {
+  noLoop();
+  title.innerHTML = "Game over, Score: " + score;
 }
 
 function keyTyped() {

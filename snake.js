@@ -2,7 +2,8 @@ function Snake() {
   this.cdir = "E";
   this.ndir = 4;
   this.eat = false;
-  
+  this.dead = false;
+
   this.coords = [
     {
       x: 300,
@@ -35,13 +36,29 @@ function Snake() {
       x: oldCoords.x + coordDif.x,
       y: oldCoords.y + coordDif.y,
     };
-    if(!this.eat) {
-      this.coords.shift();
+    
+    for(let i = 1; i < this.coords.length - 1; i++) {
+      let coord = this.coords[i];
+      if (coord.x === newCoords.x && coord.y === newCoords.y) {
+        this.dead = true;
+      }
     }
+    
+    if (
+      newCoords.x === 0 ||
+      newCoords.x == 600 ||
+      newCoords.y == 0 ||
+      newCoords.y == 600
+    ) {
+      snake.dead = true;
+    }
+      if (!this.eat) {
+        this.coords.shift();
+      }
     this.eat = false;
+
     this.coords.push(newCoords);
     this.cdir = coordDif.n;
     this.ndir = 4;
   };
 }
-
