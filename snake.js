@@ -23,6 +23,7 @@ function Snake() {
       let nX = this.coords[i + 1].x;
       let nY = this.coords[i + 1].y;
 
+      
       stroke(0);
       strokeWeight(0.6);
       line(pX, pY, nX, nY);
