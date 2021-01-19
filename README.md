@@ -3,4 +3,5 @@ Simple project to try out p5.js. The classic snake game in a grid format, where 
 
 
 
+
 ![alt text](https://github.com/ghandeland/grid-snake/blob/main/docs/snake.PNG?raw=true)
