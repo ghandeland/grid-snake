@@ -2,8 +2,68 @@
 // Equivalent: 4, 5, 6, 7, 8, 1, 2, 3
 // Length unit
 const lu = 12;
-
+const cSize = lu * 50;
 let snake = new Snake(240, 240);
+let food = new Food();
+food.spawn();
+
+function Food() {
+  this.x = 240;
+  this.y = 240;
+  
+  this.spawn = function() {
+    this.x = (Math.floor(Math.random() * 49) + 1) * lu;
+    this.y = (Math.floor(Math.random() * 49) + 1) * lu;
+  }
+  
+  this.render = function() {
+    
+    console.log(this.x + " " + this.y);
+    
+    noStroke();
+    fill('red');
+    ellipse(this.x, this.y, 5) 
+  }
+  
+}
+
+function setup() {
+  createCanvas(cSize, cSize);
+}
+
+function renderBackground() {
+  background(220);
+  frameRate(3);
+  
+  // Draw grid
+  stroke(51);
+  strokeWeight(0.2);
+  
+  
+  for (let i = 0; i < cSize; i += lu) {
+    line(width, i, 0, i);
+    line(i, 0, i, height);
+  }
+}
+
+
+
+function draw() {
+  renderBackground();
+
+  food.render();
+  snake.update();
+  checkEat();
+  snake.render();
+}
+
+
+
+function checkEat() {
+  
+  
+  
+}
 
 function keyTyped() {
   if (
@@ -17,35 +77,7 @@ function keyTyped() {
   ) {
     snake.ndir = parseInt(key);
   } 
-  
 }
-
-function setup() {
-  createCanvas(50 * lu, 50 * lu);
-  
-}
-
-function newFrame() {
-  background(220);
-  frameRate(3);
-  //noLoop();
-  
-  // Draw grid
-  stroke(51);
-  strokeWeight(0.2);
-  for (let i = 0; i < width; i += lu) {
-    line(width, i, 0, i);
-    line(i, 0, i, height);
-  }
-}
-
-function draw() {
-  newFrame();
-  snake.update();
-  snake.render();
-  
-}
-
 
 const dirLookups = {
   E: 0,
