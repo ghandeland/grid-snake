@@ -3,29 +3,9 @@
 // Length unit
 const lu = 12;
 const cSize = lu * 50;
-let snake = new Snake(240, 240);
+let snake = new Snake();
 let food = new Food();
 food.spawn();
-
-function Food() {
-  this.x = 240;
-  this.y = 240;
-  
-  this.spawn = function() {
-    this.x = (Math.floor(Math.random() * 49) + 1) * lu;
-    this.y = (Math.floor(Math.random() * 49) + 1) * lu;
-  }
-  
-  this.render = function() {
-    
-    console.log(this.x + " " + this.y);
-    
-    noStroke();
-    fill('red');
-    ellipse(this.x, this.y, 5) 
-  }
-  
-}
 
 function setup() {
   createCanvas(cSize, cSize);
@@ -46,8 +26,6 @@ function renderBackground() {
   }
 }
 
-
-
 function draw() {
   renderBackground();
 
@@ -57,11 +35,12 @@ function draw() {
   snake.render();
 }
 
-
-
 function checkEat() {
-  
-  
+  if(snake.coords[snake.coords.length - 1].x === food.x 
+    && snake.coords[snake.coords.length - 1].y === food.y) {
+      food.spawn();
+      snake.eat = true;
+    } 
   
 }
 

@@ -1,25 +1,16 @@
-function Snake(x, y) {
-  this.x = x;
-  this.y = y;
+function Snake() {
   this.cdir = "E";
   this.ndir = 4;
-
+  this.eat = false;
+  
   this.coords = [
     {
-      x: 240,
-      y: 240,
+      x: 300,
+      y: 288,
     },
     {
-      x: 252,
-      y: 240,
-    },
-    {
-      x: 264,
-      y: 240,
-    },
-    {
-      x: 276,
-      y: 240,
+      x: 300,
+      y: 300,
     },
   ];
 
@@ -44,8 +35,10 @@ function Snake(x, y) {
       x: oldCoords.x + coordDif.x,
       y: oldCoords.y + coordDif.y,
     };
-
-    this.coords.shift();
+    if(!this.eat) {
+      this.coords.shift();
+    }
+    this.eat = false;
     this.coords.push(newCoords);
     this.cdir = coordDif.n;
     this.ndir = 4;
